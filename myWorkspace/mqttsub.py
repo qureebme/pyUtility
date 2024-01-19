@@ -9,6 +9,10 @@ def on_connect(client, userdata, flags, rc):
     #client.subscribe(("$SYS/#", 0), ("data/value", 0))
     client.subscribe("data/value")
 
+def on_subscribe(client, userdata, mid, granted_qos):
+    print("on subscribe: \
+          \tgqos:", granted_qos, \
+          "client: ", client._client_id)
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic+" "+ str(msg.payload))
@@ -16,6 +20,7 @@ def on_message(client, userdata, msg):
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+client.on_subscribe = on_subscribe
 
 #client.connect("mqtt.eclipseprojects.io", 5000, 60)
 client.connect("localhost", 5000, 60)
